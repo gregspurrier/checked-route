@@ -1,7 +1,8 @@
 (ns checked-route.core-test
   (:use checked-route.core
         midje.sweet
-        [midje.util :only (expose-testables)]))
+        [midje.util :only (expose-testables)])
+  (:require [compojure.core :refer [POST]]))
 
 (expose-testables checked-route.core)
 

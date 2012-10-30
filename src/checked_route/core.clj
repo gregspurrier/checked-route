@@ -56,11 +56,13 @@ destructuring form."
   [verb path args & body]
   (let [syms-and-checks (args->syms-and-checks args)
         error-map-sym (gensym)]
-    `(~verb ~path ~args
-            (let [~@(pre-check-binding-forms syms-and-checks)]
-              (let [~error-map-sym ~(check-form syms-and-checks)]
-                (if (empty? ~error-map-sym)
-                  (let [~@(post-check-binding-forms syms-and-checks)]
-                    ~@body)
-                  {:status 400
-                   :body {:errors ~error-map-sym}}))))))
+    (if (seq syms-and-checks)
+      `(~verb ~path ~args
+              (let [~@(pre-check-binding-forms syms-and-checks)]
+                (let [~error-map-sym ~(check-form syms-and-checks)]
+                  (if (empty? ~error-map-sym)
+                    (let [~@(post-check-binding-forms syms-and-checks)]
+                      ~@body)
+                    {:status 400
+                     :body {:errors ~error-map-sym}}))))
+      `(~verb ~path ~args ~@body))))
