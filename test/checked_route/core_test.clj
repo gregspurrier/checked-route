@@ -21,3 +21,19 @@
   (fact "preserves symbol metadata"
     (meta (first (bound-variables '[^{:optional true} x])))
     => {:optional true}))
+
+(unfinished check-fn)
+(facts "about check-parameter"
+  (check-parameter nil check-fn true)
+  => nil
+
+  (check-parameter nil check-fn false)
+  => "required but missing"
+
+  (check-parameter ..val.. check-fn true)
+  => ..check-result..
+  (provided (check-fn ..val..) => ..check-result..)
+
+  (check-parameter ..val.. check-fn false)
+  => ..check-result..
+  (provided (check-fn ..val..) => ..check-result..))

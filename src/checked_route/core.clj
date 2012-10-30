@@ -43,11 +43,19 @@ destructuring form."
   [syms-and-checks]
   (xform-binding-forms :post-check-xform syms-and-checks))
 
-;; TODO - Add checks for required parameters
+(defn check-parameter
+  [param-value check-fn optional]
+  (if param-value
+    (check-fn param-value)
+    (if (not optional)
+      "required but missing")))
+
 (defn- check-form
   [syms-and-checks]
   `(->> [~@(map (fn [[sym spec]]
-                  `['~sym (~(:check spec) ~sym)])
+                  `['~sym (check-parameter ~sym
+                                           ~(:check spec)
+                                           ~(:optional spec))])
                 syms-and-checks)]
         (remove (comp empty? second))
         (into {})))
