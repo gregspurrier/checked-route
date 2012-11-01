@@ -4,6 +4,7 @@
   [x]
   nil)
 
+;; ## Default Bindings for Overridable Behavior
 (def ^:dynamic *default-check-spec*
   "The default check specification for each route argument. These are
 overriden with metadata attached to the individual arguments in the
@@ -13,6 +14,19 @@ route definition."
    :post-check-xform identity
    :required         false})
 
+(def ^:dynamic *missing-required-argument-error*
+  "The error value to associate with a required argument in the errors
+map when the argument is missing."
+  "required but missing")
+
+(def ^:dynamic *make-error-response*
+  "A function that creates a Ring response from a map of argument symbols
+to their associated errors."
+  (fn [errors]
+    {:status 400
+     :body {:errors errors}}))
+
+;; ## The `checked` Macro and Associated Support Code
 (defn- ^:testable bound-variables
   "Extract the symbols that are bound by the provided route args
 destructuring form."
@@ -51,7 +65,7 @@ destructuring form."
   (if param-value
     (check-fn param-value)
     (if required
-      "required but missing")))
+      *missing-required-argument-error*)))
 
 (defn- check-form
   [syms-and-checks]
@@ -74,6 +88,5 @@ destructuring form."
                   (if (empty? ~error-map-sym)
                     (let [~@(post-check-binding-forms syms-and-checks)]
                       ~@body)
-                    {:status 400
-                     :body {:errors ~error-map-sym}}))))
+                    (*make-error-response* ~error-map-sym)))))
       `(~verb ~path ~args ~@body))))

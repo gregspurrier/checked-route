@@ -27,7 +27,7 @@
   => nil
 
   (check-parameter nil check-fn true)
-  => "required but missing"
+  => *missing-required-argument-error*
 
   (check-parameter ..val.. check-fn false)
   => ..check-result..
