@@ -4,8 +4,11 @@
   [x]
   nil)
 
-(def ^:private default-metadata
-  {:pre-check-xform  identity
+(def ^:dynamic *default-check-spec*
+  "The default check specification for each route argument. These are
+overriden with metadata attached to the individual arguments in the
+route definition."
+  {:pre-check-xform identity
    :check            accept-anything
    :post-check-xform identity
    :required         false})
@@ -20,7 +23,7 @@ destructuring form."
 
 (defn- check-spec
   [sym]
-  (merge default-metadata (meta sym)))
+  (merge *default-check-spec* (meta sym)))
 
 (defn- args->syms-and-checks
   "Converts a Compojure destructuring args form into a seq of [symbol,
