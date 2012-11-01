@@ -13,26 +13,18 @@ For example, consider this Compojure route that expects two parameters, `bar` an
 If `bar` and `baz` have check functions `check-bar` and `check-baz`, respectively, that return nil on success and error message(s) on failure, then you can use a checked route to enforce them:
 
 ```clojure
-(checked POST "/foo" [^{:check check-bar} bar ^{:check check-baz} baz]
+(require '[checked-route.route :as checked])
+(checked/POST "/foo" [^{:check check-bar} bar ^{:check check-baz} baz]
   (do-something bar baz))
 ```
 
-The only changes made to the original route were:
-
-1. Prefixing the route form with `checked`
-2. Adding metadata to `bar` and `baz` indicating which check functions to use
+The `checked-route.route` namespace provides checked versions of Compojure's route macros (`GET`, `PUT`, etc.). If no metadata is associated with a checked route's arguments, then the route will have the same behavior as its unchecked equivalent. Adding metadata tags, such as `:check`, to an argument enables checking of that argument. See the "Recognized Metadata" section below for the supported tags.
 
 ## Installation via Leiningen
-To use `checked-route`, add the following to the `:dependencies` section of your project.clj file:
+To use `checked-route` in your project, add the following to the `:dependencies` section of your project.clj file:
 
 ```clojure
-[checked-route "0.1.0-SNAPSHOT"]
-```
-
-then add the following require clause to your namespace declaration:
-
-```clojure
-(:require [checked-route.core :refer (checked)])
+[checked-route "0.1.0"]
 ```
 
 ## Recognized Metadata

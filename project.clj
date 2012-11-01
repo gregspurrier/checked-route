@@ -1,4 +1,4 @@
-(defproject checked-route "0.1.0-SNAPSHOT"
+(defproject checked-route "0.1.0"
   :description "Type-checked routes for Compojure"
   :url "https://github.com/gregspurrier/checked-route"
   :license {:name "MIT"
