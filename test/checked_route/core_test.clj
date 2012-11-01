@@ -1,8 +1,7 @@
 (ns checked-route.core-test
   (:use checked-route.core
         midje.sweet
-        [midje.util :only (expose-testables)])
-  (:require [compojure.core :refer [POST]]))
+        [midje.util :only (expose-testables)]))
 
 (expose-testables checked-route.core)
 
@@ -19,21 +18,21 @@
     (bound-variables '[x y :as {u :uri}])
     => '[x y u])
   (fact "preserves symbol metadata"
-    (meta (first (bound-variables '[^{:optional true} x])))
-    => {:optional true}))
+    (meta (first (bound-variables '[^{:required true} x])))
+    => {:required true}))
 
 (unfinished check-fn)
 (facts "about check-parameter"
-  (check-parameter nil check-fn true)
+  (check-parameter nil check-fn false)
   => nil
 
-  (check-parameter nil check-fn false)
+  (check-parameter nil check-fn true)
   => "required but missing"
 
-  (check-parameter ..val.. check-fn true)
+  (check-parameter ..val.. check-fn false)
   => ..check-result..
   (provided (check-fn ..val..) => ..check-result..)
 
-  (check-parameter ..val.. check-fn false)
+  (check-parameter ..val.. check-fn true)
   => ..check-result..
   (provided (check-fn ..val..) => ..check-result..))

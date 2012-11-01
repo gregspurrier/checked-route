@@ -8,7 +8,7 @@
   {:pre-check-xform  identity
    :check            accept-anything
    :post-check-xform identity
-   :optional         false})
+   :required         false})
 
 (defn- ^:testable bound-variables
   "Extract the symbols that are bound by the provided route args
@@ -44,10 +44,10 @@ destructuring form."
   (xform-binding-forms :post-check-xform syms-and-checks))
 
 (defn check-parameter
-  [param-value check-fn optional]
+  [param-value check-fn required]
   (if param-value
     (check-fn param-value)
-    (if (not optional)
+    (if required
       "required but missing")))
 
 (defn- check-form
@@ -55,7 +55,7 @@ destructuring form."
   `(->> [~@(map (fn [[sym spec]]
                   `['~sym (check-parameter ~sym
                                            ~(:check spec)
-                                           ~(:optional spec))])
+                                           ~(:required spec))])
                 syms-and-checks)]
         (remove (comp empty? second))
         (into {})))
