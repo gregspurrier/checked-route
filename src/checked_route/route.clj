@@ -18,7 +18,7 @@
 (defmacro PUT
   "Generate a checked PUT route."
   [path args & body]
-  `(checked compojure/POST ~path ~args ~@body))
+  `(checked compojure/PUT ~path ~args ~@body))
 
 (defmacro DELETE
   "Generate a checked DELETE route."
