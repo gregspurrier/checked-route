@@ -2,7 +2,7 @@
 
 `checked-route` allows you to check--e.g., against a schema defined
 with [clj-schema](https://github.com/runa-dev/clj-schema)--Compojure
-route parameters before handing them over to the route's body. Any check failures result in a 401 error being returned to the caller.
+route parameters before handing them over to the route's body. Any check failures result in a 400 error being returned to the caller.
 
 For example, consider this Compojure route that expects two parameters, `bar` and `baz`:
 
