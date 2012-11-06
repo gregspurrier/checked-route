@@ -24,7 +24,7 @@ The `checked-route.route` namespace provides checked versions of Compojure's rou
 To use `checked-route` in your project, add the following to the `:dependencies` section of your project.clj file:
 
 ```clojure
-[checked-route "0.1.0"]
+[checked-route "0.1.1"]
 ```
 
 ## Recognized Metadata
